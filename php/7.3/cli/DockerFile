@@ -1,0 +1,95 @@
+FROM ubuntu:eoan
+
+MAINTAINER Shaun Freeman <shaun@shaunfreeman.co.uk>
+
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        tzdata \
+    && echo "Europe/London " > /etc/timezone \
+    && dpkg-reconfigure -f noninteractive tzdata \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends  \
+        ca-certificates \
+        curl \
+        build-essential \
+        libprotobuf-dev \
+        libboost-dev \
+        openssl \
+        protobuf-compiler \
+        php7.3-cli \
+        php7.3-dev \
+        php7.3-mysql \
+        php7.3-pdo \
+        php7.3-xml \
+        php-pear \
+    && pecl channel-update pecl.php.net \
+    # xdebug
+    && pecl download xdebug-2.7.2 \
+    && tar xvzf xdebug-2.7.2.tgz \
+    && cd /xdebug-2.7.2 \
+    && phpize \
+    && ./configure \
+        --enable-xdebug \
+    && make -j "$(nproc)" \
+    && make install \
+    && make clean \
+    && cd / \
+    && rm -fr /xdebug-2.7.2 \
+    && rm /xdebug-2.7.2.tgz \
+    # uopz
+    && pecl download uopz-6.1.1 \
+    && tar xvzf uopz-6.1.1.tgz \
+    && cd /uopz-6.1.1 \
+    && phpize \
+    && ./configure \
+        --enable-uopz \
+    && make -j "$(nproc)" \
+    && make install \
+    && make clean \
+    && cd / \
+    && rm -fr /uopz-6.1.1 \
+    && rm /uopz-6.1.1.tgz \
+    # mysql_xdevapi
+    && pecl download mysql_xdevapi-8.0.17 \
+    && tar xvzf mysql_xdevapi-8.0.17.tgz \
+    && cd /mysql_xdevapi-8.0.17 \
+    && phpize \
+    && ./configure \
+        --enable-mysql-xdevapi \
+        --with-boost \
+        --with-protobuf \
+    && make -j "$(nproc)" \
+    && make install \
+    && make clean \
+    && cd / \
+    && rm -fr /mysql_xdevapi-8.0.17 \
+    && rm /mysql_xdevapi-8.0.17.tgz \
+    # add ini settings
+    && echo "zend_extension=xdebug.so" > /etc/php/7.3/mods-available/xdebug.ini \
+    && echo "xdebug.remote_host=host.docker.internal" >> /etc/php/7.3/mods-available/xdebug.ini \
+    && echo "xdebug.remote_port=9009" >> /etc/php/7.3/mods-available/xdebug.ini \
+    && echo "xdebug.remote_enable=1" >> /etc/php/7.3/mods-available/xdebug.ini \
+    && echo "xdebug.remote_autostart=0" >> /etc/php/7.3/mods-available/xdebug.ini \
+    && echo "extension=uopz.so" > /etc/php/7.3/mods-available/uopz.ini \
+    && echo "extension=mysql_xdevapi.so" > /etc/php/7.3/mods-available/mysql_xdevapi.ini \
+    # enable extentions
+    && phpenmod -v 7.3 -s ALL xdebug \
+    && phpenmod -v 7.3 -s ALL uopz \
+    && phpenmod -v 7.3 -s ALL mysql_xdevapi \
+    # clean up
+    && apt-get remove -y --no-install-recommends  \
+        build-essential \
+        libboost-dev \
+        protobuf-compiler \
+        php7.3-dev \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY docker-php-entrypoint.sh /usr/local/bin/
+
+RUN ["chmod", "+x", "/usr/local/bin/docker-php-entrypoint.sh"]
+
+ENTRYPOINT ["/usr/local/bin/docker-php-entrypoint.sh"]
+
+CMD ["php", "-a"]
