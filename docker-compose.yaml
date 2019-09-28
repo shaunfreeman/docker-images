@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+
+  php-7.3-cli:
+    build:
+      context: ./php/7.3/cli
+      dockerfile: DockerFile
+    tty: true
