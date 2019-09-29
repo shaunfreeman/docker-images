@@ -16,6 +16,7 @@ RUN apt-get update \
         cmake \
         pkg-config \
         re2c \
+        git \
         dpkg-dev \
         libprotobuf-dev \
         libboost-dev \
@@ -46,6 +47,7 @@ RUN apt-get update \
         cmake \
         pkg-config \
         re2c \
+        git \
         dpkg-dev \
         libprotobuf-dev \
         libboost-dev \

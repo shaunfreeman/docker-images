@@ -1,4 +1,4 @@
-PHP Images
+PHP Cli Images
 ================
 
 Docker container to provide PHP on the command line. Used in PhpStorm for setting up development environment easily and quickly. PHP modules enabled
@@ -57,5 +57,5 @@ PHP modules enabled
 * zlib
 
 [Zend Modules]
- * Xdebug
+ * Xdebug 
  * Zend OPcache
