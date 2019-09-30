@@ -39,7 +39,6 @@ RUN apt-get update \
     && compile-php.sh \
     # clean up
     && apt-get remove -y --no-install-recommends  \
-        git \
         wget \
         file \
         build-essential \
