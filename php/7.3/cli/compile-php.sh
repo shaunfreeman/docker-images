@@ -92,4 +92,8 @@ echo "xdebug.remote_enable=1" >> ${PHP_CONFIG}/conf.d/xdebug.ini
 echo "xdebug.remote_autostart=0" >> ${PHP_CONFIG}/conf.d/xdebug.ini
 echo "extension=uopz.so" > ${PHP_CONFIG}/conf.d/uopz.ini
 echo "extension=mysql_xdevapi.so" > ${PHP_CONFIG}/conf.d/mysql_xdevapi.ini
-echo "zend_extension=opcache.so" > ${PHP_CONFIG}/conf.d/opcache.ini
+
+# install composer
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+php -r "unlink('composer-setup.php');"
