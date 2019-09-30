@@ -4,6 +4,10 @@ PHP_VERSION=7.3.10
 MYSQL_XDEVAPI_VERSION=8.0.17
 PHP_CONFIG=/usr/local/etc
 
+export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
+    CPPFLAGS="$CFLAGS" \
+    LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie"
+
 wget https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz
 tar xvzf php-${PHP_VERSION}.tar.gz
 mkdir -v ${PHP_CONFIG}/conf.d
