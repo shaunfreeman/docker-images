@@ -23,6 +23,7 @@ mkdir -v ${PHP_CONFIG}/conf.d
     --disable-cgi \
     --disable-fpm \
     --disable-phpdbg \
+    --disable-opcache \
     --without-pear \
     --enable-bcmath \
     --with-curl \
@@ -38,7 +39,12 @@ mkdir -v ${PHP_CONFIG}/conf.d
     --with-pdo-mysql \
     --with-openssl \
     --with-zlib \
-    --with-zlib-dir
+    --with-zlib-dir \
+    --enable-zip \
+    --with-libzip \
+    --with-password-argon2 \
+	--with-sodium \
+	--with-libedit
 
 make -j"$(nproc)"
 make install

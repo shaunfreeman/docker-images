@@ -8,6 +8,9 @@ RUN ["chmod", "+x", "/usr/local/bin/compile-php.sh"]
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends  \
+        unzip \
+        libzip4 \
+        git \
         wget \
         file \
         ca-certificates \
@@ -17,7 +20,6 @@ RUN apt-get update \
         cmake \
         pkg-config \
         re2c \
-        git \
         dpkg-dev \
         libprotobuf-dev \
         libboost-dev \
@@ -37,6 +39,13 @@ RUN apt-get update \
         zlib1g \
         libjpeg-turbo8 \
         libxml2 \
+        libzip-dev \
+        libargon2-0 \
+        libargon2-0-dev \
+        libsodium-dev \
+        libsodium23 \
+        libedit2 \
+        libedit-dev \
     && compile-php.sh \
     # clean up
     && apt-get remove -y --no-install-recommends  \
@@ -48,7 +57,6 @@ RUN apt-get update \
         cmake \
         pkg-config \
         re2c \
-        git \
         dpkg-dev \
         libprotobuf-dev \
         libboost-dev \
@@ -61,6 +69,10 @@ RUN apt-get update \
         libssl-dev \
         zlib1g-dev \
         libxml2-dev \
+        libzip-dev \
+        libargon2-0-dev \
+        libsodium-dev \
+        libedit-dev \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
@@ -72,11 +84,3 @@ STOPSIGNAL SIGQUIT
 
 EXPOSE 9000
 CMD ["php-fpm"]
-
-#ARG user
-#ARG uid
-
-#RUN useradd -u $uid $user \
-    #&& echo "user = $user" >> /usr/local/etc/php-fpm.d/zz-docker.conf \
-   # && echo "group = $user" >> /usr/local/etc/php-fpm.d/zz-docker.conf \
-   # && chown -R $user:$user /var/www

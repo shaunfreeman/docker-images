@@ -7,6 +7,8 @@ RUN ["chmod", "+x", "/usr/local/bin/compile-php.sh"]
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends  \
+        unzip \
+        libzip4 \
         git \
         wget \
         file \
@@ -30,12 +32,19 @@ RUN apt-get update \
         zlib1g-dev \
         libxml2-dev \
         curl \
-        #libprotobuf10 \
+        libprotobuf10 \
         protobuf-compiler \
         libfreetype6 \
         zlib1g \
         libjpeg-turbo8 \
         libxml2 \
+        libzip-dev \
+        libargon2-0 \
+        libargon2-0-dev \
+        libsodium-dev \
+        libsodium23 \
+        libedit2 \
+        libedit-dev \
     && compile-php.sh \
     # clean up
     && apt-get remove -y --no-install-recommends  \
@@ -59,6 +68,10 @@ RUN apt-get update \
         libssl-dev \
         zlib1g-dev \
         libxml2-dev \
+        libzip-dev \
+        libargon2-0-dev \
+        libsodium-dev \
+        libedit-dev \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 

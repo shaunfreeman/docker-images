@@ -21,11 +21,10 @@ cd /php-${PHP_VERSION}
     --with-config-file-path=${PHP_CONFIG} \
 	--with-config-file-scan-dir=${PHP_CONFIG}/conf.d \
     --disable-cgi \
-    --enable-fpm \
-    --with-fpm-user=www-data \
-    --with-fpm-group=www-data \
-    --without-pear \
+    --disable-fpm \
     --disable-phpdbg \
+    --disable-opcache \
+    --without-pear \
     --enable-bcmath \
     --with-curl \
     --enable-exif \
@@ -40,7 +39,13 @@ cd /php-${PHP_VERSION}
     --with-pdo-mysql \
     --with-openssl \
     --with-zlib \
-    --with-zlib-dir
+    --with-zlib-dir \
+    --enable-zip \
+    --with-libzip \
+    --with-password-argon2 \
+	--with-sodium \
+	--with-libedit
+
 make -j"$(nproc)"
 make install
 make clean
