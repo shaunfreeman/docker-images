@@ -26,7 +26,6 @@ cd /php-${PHP_VERSION}
     --with-fpm-user=www-data \
     --with-fpm-group=www-data \
     --disable-phpdbg \
-    --disable-opcache \
     --without-pear \
     --enable-bcmath \
     --with-curl \
@@ -78,3 +77,4 @@ mv /tmp/fpm-pool.conf ${PHP_CONFIG}/php-fpm.d/www.conf
 sed 's!=NONE/!=!g' ${PHP_CONFIG}/php-fpm.conf.default | tee ${PHP_CONFIG}/php-fpm.conf > /dev/null
 
 echo "extension=mysql_xdevapi.so" > ${PHP_CONFIG}/conf.d/mysql_xdevapi.ini
+echo "zend_extension=opcache.so" > ${PHP_CONFIG}/conf.d/opcache.ini
