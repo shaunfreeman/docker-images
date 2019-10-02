@@ -21,7 +21,10 @@ cd /php-${PHP_VERSION}
     --with-config-file-path=${PHP_CONFIG} \
 	--with-config-file-scan-dir=${PHP_CONFIG}/conf.d \
     --disable-cgi \
-    --disable-fpm \
+    --disable-cli \
+    --enable-fpm \
+    --with-fpm-user=www-data \
+    --with-fpm-group=www-data \
     --disable-phpdbg \
     --disable-opcache \
     --without-pear \
