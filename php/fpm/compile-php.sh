@@ -46,7 +46,11 @@ cd /php-${PHP_VERSION}
     --with-libzip \
     --with-password-argon2 \
 	--with-sodium \
-	--with-libedit
+	--with-libedit \
+	--enable-sysvmsg \
+	--enable-sysvsem \
+	--enable-sysvshm \
+	--enable-shmop
 
 make -j"$(nproc)"
 make install
