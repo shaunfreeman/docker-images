@@ -80,7 +80,7 @@ mv /tmp/fpm-pool.conf ${PHP_CONFIG}/php-fpm.d/www.conf
 
 sed 's!=NONE/!=!g' ${PHP_CONFIG}/php-fpm.conf.default | tee ${PHP_CONFIG}/php-fpm.conf > /dev/null
 
-echo "extension=mysql_xdevapi.so" > ${PHP_CONFIG}/conf.d/mysql_xdevapi.ini
-echo "zend_extension=opcache.so" > ${PHP_CONFIG}/conf.d/opcache.ini
+echo "extension=mysql_xdevapi.so" > ${PHP_CONFIG}/conf.d/20-mysql_xdevapi.ini
+echo "zend_extension=opcache.so" > ${PHP_CONFIG}/conf.d/10-opcache.ini
 # fix for opcache crashing with mysql_xdevapi\Collection::offset() and mysql_xdevapi\Collection::limit(). see https://bugs.php.net/bug.php?id=78639
-echo "opcache.optimization_level=0" >> ${PHP_CONFIG}/conf.d/opcache.ini
+echo "opcache.optimization_level=0" >> ${PHP_CONFIG}/conf.d/10-opcache.ini
