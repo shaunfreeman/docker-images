@@ -1,9 +1,39 @@
-version: '3.7'
+version: "3.7"
 
 services:
 
+  php-cli:
+    build:
+      context: php/cli
+      dockerfile: DockerFile
+    tty: true
+
+  php-fpm:
+    build:
+      context: php/cli
+      dockerfile: DockerFile
+    tty: true
+
   php-7.3-cli:
     build:
-      context: ./php/7.3/cli
+      context: php/7.3/cli
+      dockerfile: DockerFile
+    tty: true
+
+  php-7.3-fpm:
+    build:
+      context: php/7.3/fpm
+      dockerfile: DockerFile
+    tty: true
+
+  php-7.4-cli:
+    build:
+      context: php/7.4/cli
+      dockerfile: DockerFile
+    tty: true
+
+  php-7.4-fpm:
+    build:
+      context: php/7.4/fpm
       dockerfile: DockerFile
     tty: true
