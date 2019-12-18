@@ -1,7 +1,5 @@
 #!/bin/bash
 
-PHP_VERSION=7.3.13
-MYSQL_XDEVAPI_VERSION=8.0.18
 PHP_CONFIG=/usr/local/etc
 
 export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
@@ -30,10 +28,9 @@ cd /php-${PHP_VERSION}
     --enable-bcmath \
     --with-curl \
     --enable-exif \
-    --with-gd \
-    --with-freetype-dir \
-    --with-jpeg-dir \
-    --with-png-dir \
+    --enable-gd \
+    --with-freetype \
+    --with-jpeg \
     --enable-intl \
     --enable-mbstring \
     --enable-mysqlnd \
@@ -42,15 +39,14 @@ cd /php-${PHP_VERSION}
     --with-openssl \
     --with-zlib \
     --with-zlib-dir \
-    --enable-zip \
-    --with-libzip \
+    --with-zip \
     --with-password-argon2 \
-	--with-sodium \
-	--with-libedit \
-	--enable-sysvmsg \
-	--enable-sysvsem \
-	--enable-sysvshm \
-	--enable-shmop
+    --with-sodium \
+    --with-libedit \
+    --enable-sysvmsg \
+    --enable-sysvsem \
+    --enable-sysvshm \
+    --enable-shmop
 
 make -j"$(nproc)"
 make install

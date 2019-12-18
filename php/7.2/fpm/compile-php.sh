@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PHP_VERSION=7.3.13
+PHP_VERSION=7.2.26
 MYSQL_XDEVAPI_VERSION=8.0.18
 PHP_CONFIG=/usr/local/etc
 
@@ -45,12 +45,12 @@ cd /php-${PHP_VERSION}
     --enable-zip \
     --with-libzip \
     --with-password-argon2 \
-	--with-sodium \
-	--with-libedit \
-	--enable-sysvmsg \
-	--enable-sysvsem \
-	--enable-sysvshm \
-	--enable-shmop
+	  --with-sodium \
+	  --with-libedit \
+	  --enable-sysvmsg \
+	  --enable-sysvsem \
+	  --enable-sysvshm \
+	  --enable-shmop
 
 make -j"$(nproc)"
 make install
