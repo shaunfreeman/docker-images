@@ -1,9 +1,9 @@
 #!/bin/bash
 
-PHP_VERSION=7.4.1
-XDEBUG_VERSION=2.8.1
+PHP_VERSION=7.4.2
+XDEBUG_VERSION=2.9.1
 UOPZ_VERSION="v6.1.1"
-MYSQL_XDEVAPI_VERSION=8.0.18
+MYSQL_XDEVAPI_VERSION=8.0.19
 PHP_CONFIG=/usr/local/etc
 
 export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
