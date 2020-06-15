@@ -1,7 +1,7 @@
 #!/bin/bash
 
-PHP_VERSION=7.3.15
-MYSQL_XDEVAPI_VERSION=8.0.19
+PHP_VERSION=7.3.19
+MYSQL_XDEVAPI_VERSION=8.0.20
 PHP_CONFIG=/usr/local/etc
 
 export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
@@ -19,7 +19,7 @@ cd /php-${PHP_VERSION}
 ./configure \
     --build=$(dpkg-architecture --query DEB_BUILD_GNU_TYPE) \
     --with-config-file-path=${PHP_CONFIG} \
-	  --with-config-file-scan-dir=${PHP_CONFIG}/conf.d \
+	--with-config-file-scan-dir=${PHP_CONFIG}/conf.d \
     --disable-cgi \
     --disable-cli \
     --enable-fpm \
