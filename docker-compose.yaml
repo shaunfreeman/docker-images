@@ -2,18 +2,6 @@ version: "3.7"
 
 services:
 
-  php-cli:
-    build:
-      context: php/cli
-      dockerfile: Dockerfile
-    tty: true
-
-  php-fpm:
-    build:
-      context: php/cli
-      dockerfile: Dockerfile
-    tty: true
-
   php-7.1-cli:
     build:
       context: php/7.1/cli
@@ -59,5 +47,17 @@ services:
   php-7.4-fpm:
     build:
       context: php/7.4/fpm
+      dockerfile: Dockerfile
+    tty: true
+
+  php-8.0-cli:
+    build:
+      context: php/8.0/cli
+      dockerfile: Dockerfile
+    tty: true
+
+  php-8.0-fpm:
+    build:
+      context: php/8.0/fpm
       dockerfile: Dockerfile
     tty: true

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PHP_VERSION=7.4.8
+PHP_VERSION=8.0.0alpha3
 XDEBUG_VERSION=2.9.6
 UOPZ_VERSION="v6.1.2"
 MYSQL_XDEVAPI_VERSION=8.0.21
@@ -10,7 +10,7 @@ export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
   CPPFLAGS="$CFLAGS" \
   LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie"
 
-wget https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz
+wget https://downloads.php.net/~carusogabriel/php-${PHP_VERSION}.tar.gz
 tar xvzf php-${PHP_VERSION}.tar.gz
 cd /php-${PHP_VERSION} || exit
 mkdir -v ${PHP_CONFIG}/conf.d
