@@ -1,9 +1,9 @@
 #!/bin/bash
 
-PHP_VERSION=7.4.3
-XDEBUG_VERSION=2.9.1
-UOPZ_VERSION="v6.1.1"
-MYSQL_XDEVAPI_VERSION=8.0.19
+PHP_VERSION=7.4.8
+XDEBUG_VERSION=2.9.6
+UOPZ_VERSION="v6.1.2"
+MYSQL_XDEVAPI_VERSION=8.0.21
 PHP_CONFIG=/usr/local/etc
 
 export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
@@ -12,14 +12,14 @@ export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
 
 wget https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz
 tar xvzf php-${PHP_VERSION}.tar.gz
-cd /php-${PHP_VERSION}
+cd /php-${PHP_VERSION} || exit
 mkdir -v ${PHP_CONFIG}/conf.d
 
 ./buildconf --force
 ./configure \
-    --build=$(dpkg-architecture --query DEB_BUILD_GNU_TYPE) \
+    --build="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
     --with-config-file-path=${PHP_CONFIG} \
-	  --with-config-file-scan-dir=${PHP_CONFIG}/conf.d \
+	--with-config-file-scan-dir=${PHP_CONFIG}/conf.d \
     --disable-cgi \
     --disable-fpm \
     --disable-phpdbg \
@@ -52,7 +52,7 @@ mv php.ini-development ${PHP_CONFIG}/php.ini
 
 # xdebug
 git clone https://github.com/xdebug/xdebug.git /php-${PHP_VERSION}/ext/xdebug
-cd /php-${PHP_VERSION}/ext/xdebug
+cd /php-${PHP_VERSION}/ext/xdebug || exit
 git checkout ${XDEBUG_VERSION}
 phpize
 ./configure \
@@ -63,7 +63,7 @@ make clean
 
 # uopz
 git clone https://github.com/krakjoe/uopz.git /php-${PHP_VERSION}/ext/uopz
-cd /php-${PHP_VERSION}/ext/uopz
+cd /php-${PHP_VERSION}/ext/uopz || exit
 git checkout ${UOPZ_VERSION}
 phpize
 ./configure \
@@ -74,7 +74,7 @@ make clean
 
 # mysql_xdevapi
 git clone https://github.com/php/pecl-database-mysql_xdevapi.git /php-${PHP_VERSION}/ext/mysql_xdevapi
-cd /php-${PHP_VERSION}/ext/mysql_xdevapi
+cd /php-${PHP_VERSION}/ext/mysql_xdevapi || exit
 git checkout ${MYSQL_XDEVAPI_VERSION}
 phpize
 ./configure \
@@ -89,13 +89,16 @@ cd /
 rm -fr /php-${PHP_VERSION}
 rm /php-${PHP_VERSION}.tar.gz
 
-echo "zend_extension=xdebug.so" > ${PHP_CONFIG}/conf.d/xdebug.ini
-echo "xdebug.remote_host=host.docker.internal" >> ${PHP_CONFIG}/conf.d/xdebug.ini
-echo "xdebug.remote_port=9009" >> ${PHP_CONFIG}/conf.d/xdebug.ini
-echo "xdebug.remote_enable=1" >> ${PHP_CONFIG}/conf.d/xdebug.ini
-echo "xdebug.remote_autostart=0" >> ${PHP_CONFIG}/conf.d/xdebug.ini
+{
+  echo "zend_extension=xdebug.so"
+  echo "xdebug.remote_host=host.docker.internal"
+  echo "xdebug.remote_port=9009"
+  echo "xdebug.remote_enable=1"
+  echo "xdebug.remote_autostart=0"
+} >> ${PHP_CONFIG}/conf.d/xdebug.ini
+
 echo "extension=uopz.so" > ${PHP_CONFIG}/conf.d/uopz.ini
-echo "extension=mysql_xdevapi.so" > ${PHP_CONFIG}/conf.d/mysql_xdevapi.ini
+cho "extension=mysql_xdevapi.so" > ${PHP_CONFIG}/conf.d/mysql_xdevapi.ini
 
 # install composer
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"

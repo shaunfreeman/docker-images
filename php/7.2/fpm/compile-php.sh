@@ -1,7 +1,7 @@
 #!/bin/bash
 
-PHP_VERSION=7.2.28
-MYSQL_XDEVAPI_VERSION=8.0.19
+PHP_VERSION=7.2.32
+MYSQL_XDEVAPI_VERSION=8.0.21
 PHP_CONFIG=/usr/local/etc
 
 export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
@@ -13,13 +13,13 @@ tar xvzf php-${PHP_VERSION}.tar.gz
 mkdir -v ${PHP_CONFIG}/conf.d
 mkdir -v ${PHP_CONFIG}/php-fpm.d
 
-cd /php-${PHP_VERSION}
+cd /php-${PHP_VERSION} || exit
 
 ./buildconf --force
 ./configure \
-    --build=$(dpkg-architecture --query DEB_BUILD_GNU_TYPE) \
+    --build="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
     --with-config-file-path=${PHP_CONFIG} \
-	  --with-config-file-scan-dir=${PHP_CONFIG}/conf.d \
+	--with-config-file-scan-dir=${PHP_CONFIG}/conf.d \
     --disable-cgi \
     --disable-cli \
     --enable-fpm \
@@ -60,7 +60,7 @@ mv php.ini-development ${PHP_CONFIG}/php.ini
 
 # mysql_xdevapi
 git clone https://github.com/php/pecl-database-mysql_xdevapi.git /php-${PHP_VERSION}/ext/mysql_xdevapi
-cd /php-${PHP_VERSION}/ext/mysql_xdevapi
+cd /php-${PHP_VERSION}/ext/mysql_xdevapi || exit
 git checkout ${MYSQL_XDEVAPI_VERSION}
 phpize
 ./configure \
