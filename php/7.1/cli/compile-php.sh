@@ -1,6 +1,8 @@
 #!/bin/bash
 
-PHP_VERSION=7.2.32
+PHP_VERSION=7.1.33
+XDEBUG_VERSION=2.9.6
+UOPZ_VERSION="v6.1.2"
 MYSQL_XDEVAPI_VERSION=8.0.21
 PHP_CONFIG=/usr/local/etc
 
@@ -10,10 +12,8 @@ export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
 
 wget https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz
 tar xvzf php-${PHP_VERSION}.tar.gz
-mkdir -v ${PHP_CONFIG}/conf.d
-mkdir -v ${PHP_CONFIG}/php-fpm.d
-
 cd /php-${PHP_VERSION} || exit
+mkdir -v ${PHP_CONFIG}/conf.d
 
 ./buildconf --force
 ./configure \
@@ -21,11 +21,9 @@ cd /php-${PHP_VERSION} || exit
   --with-config-file-path=${PHP_CONFIG} \
   --with-config-file-scan-dir=${PHP_CONFIG}/conf.d \
   --disable-cgi \
-  --disable-cli \
-  --enable-fpm \
-  --with-fpm-user=www-data \
-  --with-fpm-group=www-data \
+  --disable-fpm \
   --disable-phpdbg \
+  --disable-opcache \
   --without-pear \
   --enable-bcmath \
   --with-curl \
@@ -44,19 +42,35 @@ cd /php-${PHP_VERSION} || exit
   --with-zlib-dir \
   --enable-zip \
   --with-libzip \
-  --with-password-argon2 \
-  --with-sodium \
-  --with-libedit \
-  --enable-sysvmsg \
-  --enable-sysvsem \
-  --enable-sysvshm \
-  --enable-shmop
+  --with-libedit
 
 make -j"$(nproc)"
 make install
 make clean
 
 mv php.ini-development ${PHP_CONFIG}/php.ini
+
+# xdebug
+git clone https://github.com/xdebug/xdebug.git /php-${PHP_VERSION}/ext/xdebug
+cd /php-${PHP_VERSION}/ext/xdebug || exit
+git checkout ${XDEBUG_VERSION}
+phpize
+./configure \
+  --enable-xdebug
+make -j"$(nproc)"
+make install
+make clean
+
+# uopz
+git clone https://github.com/krakjoe/uopz.git /php-${PHP_VERSION}/ext/uopz
+cd /php-${PHP_VERSION}/ext/uopz || exit
+git checkout ${UOPZ_VERSION}
+phpize
+./configure \
+  --enable-uopz
+make -j"$(nproc)"
+make install
+make clean
 
 # mysql_xdevapi
 git clone https://github.com/php/pecl-database-mysql_xdevapi.git /php-${PHP_VERSION}/ext/mysql_xdevapi
@@ -75,12 +89,18 @@ cd /
 rm -fr /php-${PHP_VERSION}
 rm /php-${PHP_VERSION}.tar.gz
 
-mv ${PHP_CONFIG}/php-fpm.d/www.conf.default ${PHP_CONFIG}/php-fpm.d/00default.conf
-mv /tmp/fpm-pool.conf ${PHP_CONFIG}/php-fpm.d/www.conf
+{
+  echo "zend_extension=xdebug.so"
+  echo "xdebug.remote_host=host.docker.internal"
+  echo "xdebug.remote_port=9009"
+  echo "xdebug.remote_enable=1"
+  echo "xdebug.remote_autostart=0"
+} >> ${PHP_CONFIG}/conf.d/xdebug.ini
 
-sed 's!=NONE/!=!g' ${PHP_CONFIG}/php-fpm.conf.default | tee ${PHP_CONFIG}/php-fpm.conf > /dev/null
+echo "extension=uopz.so" > ${PHP_CONFIG}/conf.d/uopz.ini
+echo "extension=mysql_xdevapi.so" > ${PHP_CONFIG}/conf.d/mysql_xdevapi.ini
 
-echo "extension=mysql_xdevapi.so" > ${PHP_CONFIG}/conf.d/20-mysql_xdevapi.ini
-echo "zend_extension=opcache.so" > ${PHP_CONFIG}/conf.d/10-opcache.ini
-# fix for opcache crashing with mysql_xdevapi\Collection::offset() and mysql_xdevapi\Collection::limit(). see https://bugs.php.net/bug.php?id=78639
-echo "opcache.optimization_level=0" >> ${PHP_CONFIG}/conf.d/10-opcache.ini
+# install composer
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+php -r "unlink('composer-setup.php');"

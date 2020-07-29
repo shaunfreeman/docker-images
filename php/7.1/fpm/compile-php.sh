@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PHP_VERSION=7.2.32
+PHP_VERSION=7.0.33
 MYSQL_XDEVAPI_VERSION=8.0.21
 PHP_CONFIG=/usr/local/etc
 
@@ -44,8 +44,6 @@ cd /php-${PHP_VERSION} || exit
   --with-zlib-dir \
   --enable-zip \
   --with-libzip \
-  --with-password-argon2 \
-  --with-sodium \
   --with-libedit \
   --enable-sysvmsg \
   --enable-sysvsem \

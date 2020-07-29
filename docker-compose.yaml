@@ -14,6 +14,18 @@ services:
       dockerfile: Dockerfile
     tty: true
 
+  php-7.1-cli:
+    build:
+      context: php/7.1/cli
+      dockerfile: Dockerfile
+    tty: true
+
+  php-7.1-fpm:
+    build:
+      context: php/7.1/fpm
+      dockerfile: Dockerfile
+    tty: true
+
   php-7.2-cli:
     build:
       context: php/7.2/cli

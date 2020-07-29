@@ -1,9 +1,7 @@
 #!/bin/bash
 
-PHP_VERSION=7.4.8
-XDEBUG_VERSION=2.9.6
-UOPZ_VERSION="v6.1.2"
-MYSQL_XDEVAPI_VERSION=8.0.21
+PHP_VERSION=7.0.33
+XDEBUG_VERSION=2.8.1
 PHP_CONFIG=/usr/local/etc
 
 export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
@@ -28,9 +26,10 @@ mkdir -v ${PHP_CONFIG}/conf.d
   --enable-bcmath \
   --with-curl \
   --enable-exif \
-  --enable-gd \
-  --with-freetype \
-  --with-jpeg \
+  --with-gd \
+  --with-freetype-dir \
+  --with-jpeg-dir \
+  --with-png-dir \
   --enable-intl \
   --enable-mbstring \
   --enable-mysqlnd \
@@ -39,9 +38,8 @@ mkdir -v ${PHP_CONFIG}/conf.d
   --with-openssl \
   --with-zlib \
   --with-zlib-dir \
-  --with-zip \
-  --with-password-argon2 \
-  --with-sodium \
+  --enable-zip \
+  --with-libzip \
   --with-libedit
 
 make -j"$(nproc)"
@@ -61,30 +59,6 @@ make -j"$(nproc)"
 make install
 make clean
 
-# uopz
-git clone https://github.com/krakjoe/uopz.git /php-${PHP_VERSION}/ext/uopz
-cd /php-${PHP_VERSION}/ext/uopz || exit
-git checkout ${UOPZ_VERSION}
-phpize
-./configure \
-  --enable-uopz
-make -j"$(nproc)"
-make install
-make clean
-
-# mysql_xdevapi
-git clone https://github.com/php/pecl-database-mysql_xdevapi.git /php-${PHP_VERSION}/ext/mysql_xdevapi
-cd /php-${PHP_VERSION}/ext/mysql_xdevapi || exit
-git checkout ${MYSQL_XDEVAPI_VERSION}
-phpize
-./configure \
-  --enable-mysql-xdevapi \
-  --with-boost \
-  --with-protobuf
-make -j"$(nproc)"
-make install
-make clean
-
 cd /
 rm -fr /php-${PHP_VERSION}
 rm /php-${PHP_VERSION}.tar.gz
@@ -96,9 +70,6 @@ rm /php-${PHP_VERSION}.tar.gz
   echo "xdebug.remote_enable=1"
   echo "xdebug.remote_autostart=0"
 } >> ${PHP_CONFIG}/conf.d/xdebug.ini
-
-echo "extension=uopz.so" > ${PHP_CONFIG}/conf.d/uopz.ini
-cho "extension=mysql_xdevapi.so" > ${PHP_CONFIG}/conf.d/mysql_xdevapi.ini
 
 # install composer
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"

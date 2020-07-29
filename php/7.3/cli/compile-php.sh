@@ -7,8 +7,8 @@ MYSQL_XDEVAPI_VERSION=8.0.21
 PHP_CONFIG=/usr/local/etc
 
 export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
-    CPPFLAGS="$CFLAGS" \
-    LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie"
+  CPPFLAGS="$CFLAGS" \
+  LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie"
 
 wget https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz
 tar xvzf php-${PHP_VERSION}.tar.gz
@@ -17,34 +17,34 @@ mkdir -v ${PHP_CONFIG}/conf.d
 
 ./buildconf --force
 ./configure \
-    --build="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
-    --with-config-file-path=${PHP_CONFIG} \
-	--with-config-file-scan-dir=${PHP_CONFIG}/conf.d \
-    --disable-cgi \
-    --disable-fpm \
-    --disable-phpdbg \
-    --disable-opcache \
-    --without-pear \
-    --enable-bcmath \
-    --with-curl \
-    --enable-exif \
-    --with-gd \
-    --with-freetype-dir \
-    --with-jpeg-dir \
-    --with-png-dir \
-    --enable-intl \
-    --enable-mbstring \
-    --enable-mysqlnd \
-    --with-mysqli \
-    --with-pdo-mysql \
-    --with-openssl \
-    --with-zlib \
-    --with-zlib-dir \
-    --enable-zip \
-    --with-libzip \
-    --with-password-argon2 \
-	--with-sodium \
-	--with-libedit
+  --build="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
+  --with-config-file-path=${PHP_CONFIG} \
+  --with-config-file-scan-dir=${PHP_CONFIG}/conf.d \
+  --disable-cgi \
+  --disable-fpm \
+  --disable-phpdbg \
+  --disable-opcache \
+  --without-pear \
+  --enable-bcmath \
+  --with-curl \
+  --enable-exif \
+  --with-gd \
+  --with-freetype-dir \
+  --with-jpeg-dir \
+  --with-png-dir \
+  --enable-intl \
+  --enable-mbstring \
+  --enable-mysqlnd \
+  --with-mysqli \
+  --with-pdo-mysql \
+  --with-openssl \
+  --with-zlib \
+  --with-zlib-dir \
+  --enable-zip \
+  --with-libzip \
+  --with-password-argon2 \
+  --with-sodium \
+  --with-libedit
 
 make -j"$(nproc)"
 make install
@@ -58,7 +58,7 @@ cd /php-${PHP_VERSION}/ext/xdebug || exit
 git checkout ${XDEBUG_VERSION}
 phpize
 ./configure \
-    --enable-xdebug
+  --enable-xdebug
 make -j"$(nproc)"
 make install
 make clean
@@ -69,7 +69,7 @@ cd /php-${PHP_VERSION}/ext/uopz || exit
 git checkout ${UOPZ_VERSION}
 phpize
 ./configure \
-    --enable-uopz
+  --enable-uopz
 make -j"$(nproc)"
 make install
 make clean
@@ -80,9 +80,9 @@ cd /php-${PHP_VERSION}/ext/mysql_xdevapi || exit
 git checkout ${MYSQL_XDEVAPI_VERSION}
 phpize
 ./configure \
-    --enable-mysql-xdevapi \
-    --with-boost \
-    --with-protobuf
+  --enable-mysql-xdevapi \
+  --with-boost \
+  --with-protobuf
 make -j"$(nproc)"
 make install
 make clean
