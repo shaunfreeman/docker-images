@@ -98,7 +98,7 @@ rm /php-${PHP_VERSION}.tar.gz
 } >> ${PHP_CONFIG}/conf.d/xdebug.ini
 
 echo "extension=uopz.so" > ${PHP_CONFIG}/conf.d/uopz.ini
-cho "extension=mysql_xdevapi.so" > ${PHP_CONFIG}/conf.d/mysql_xdevapi.ini
+echo "extension=mysql_xdevapi.so" > ${PHP_CONFIG}/conf.d/mysql_xdevapi.ini
 
 # install composer
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
