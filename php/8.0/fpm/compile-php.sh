@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PHP_VERSION=8.0.0alpha3
-MYSQL_XDEVAPI_VERSION=8.0.21
+MYSQL_XDEVAPI_VERSION=8.0.20
 PHP_CONFIG=/usr/local/etc
 
 export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
