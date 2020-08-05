@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  ubuntu:
+    container_name: php-8.0-fpm
+    build:
+      context: .
+      dockerfile: Dockerfile
+    tty: true
