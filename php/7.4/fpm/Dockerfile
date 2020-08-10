@@ -8,8 +8,7 @@ COPY fpm-pool.conf /tmp/fpm-pool.conf
 COPY compile-php.sh /usr/local/bin/compile-php
 RUN ["chmod", "+x", "/usr/local/bin/compile-php"]
 
-RUN tzdata-fix && \
-    apt-get update && \
+RUN apt-get update && \
     apt-get install -y --no-install-recommends  \
     unzip \
     libzip5 \
