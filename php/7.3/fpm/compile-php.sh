@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PHP_VERSION=7.3.22
+PHP_VERSION=7.3.23
 MYSQL_XDEVAPI_VERSION=8.0.21
 PHP_CONFIG=/usr/local/etc
 
