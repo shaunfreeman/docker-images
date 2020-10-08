@@ -86,4 +86,7 @@ COPY docker-php-entrypoint.sh /usr/local/bin/
 RUN ["chmod", "+x", "/usr/local/bin/docker-php-entrypoint.sh"]
 ENTRYPOINT ["/usr/local/bin/docker-php-entrypoint.sh"]
 
-CMD ["php", "-a"]
+STOPSIGNAL SIGQUIT
+
+EXPOSE 9000
+CMD ["php-fpm"]
