@@ -2,6 +2,30 @@ version: "3.7"
 
 services:
 
+  php-5.6-cli:
+    build:
+      context: php/5.6/cli
+      dockerfile: Dockerfile
+    tty: true
+
+  php-5.6-fpm:
+    build:
+      context: php/5.6/fpm
+      dockerfile: Dockerfile
+    tty: true
+
+  php-7.0-cli:
+    build:
+      context: php/7.0/cli
+      dockerfile: Dockerfile
+    tty: true
+
+  php-7.0-fpm:
+    build:
+      context: php/7.0/fpm
+      dockerfile: Dockerfile
+    tty: true
+
   php-7.1-cli:
     build:
       context: php/7.1/cli

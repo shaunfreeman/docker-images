@@ -1,12 +1,7 @@
 #!/bin/bash
 
-PHP_VERSION=8.0.0
-MYSQL_XDEVAPI_VERSION=8.0.21
+PHP_VERSION=5.6.40
 PHP_CONFIG=/usr/local/etc
-
-export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
-  CPPFLAGS="$CFLAGS" \
-  LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie"
 
 wget https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz
 tar xvzf php-${PHP_VERSION}.tar.gz
@@ -30,9 +25,10 @@ cd /php-${PHP_VERSION} || exit
   --enable-bcmath \
   --with-curl \
   --enable-exif \
-  --enable-gd \
-  --with-freetype \
-  --with-jpeg \
+  --with-gd \
+  --with-freetype-dir \
+  --with-jpeg-dir \
+  --with-png-dir \
   --enable-intl \
   --enable-mbstring \
   --enable-mysqlnd \
@@ -41,10 +37,8 @@ cd /php-${PHP_VERSION} || exit
   --with-openssl \
   --with-zlib \
   --with-zlib-dir \
-  --with-zip \
-  --with-password-argon2 \
-  --with-sodium \
-  --with-libedit \
+  --enable-zip \
+  --with-libzip \
   --enable-sysvmsg \
   --enable-sysvsem \
   --enable-sysvshm \
@@ -56,19 +50,6 @@ make clean
 
 mv php.ini-development ${PHP_CONFIG}/php.ini
 
-# mysql_xdevapi
-git clone https://github.com/php/pecl-database-mysql_xdevapi.git /php-${PHP_VERSION}/ext/mysql_xdevapi
-cd /php-${PHP_VERSION}/ext/mysql_xdevapi || exit
-git checkout ${MYSQL_XDEVAPI_VERSION}
-phpize
-./configure \
-  --enable-mysql-xdevapi \
-  --with-boost \
-  --with-protobuf
-make -j"$(nproc)"
-make install
-make clean
-
 cd /
 rm -fr /php-${PHP_VERSION}
 rm /php-${PHP_VERSION}.tar.gz
@@ -78,7 +59,6 @@ mv /tmp/fpm-pool.conf ${PHP_CONFIG}/php-fpm.d/www.conf
 
 sed 's!=NONE/!=!g' ${PHP_CONFIG}/php-fpm.conf.default | tee ${PHP_CONFIG}/php-fpm.conf > /dev/null
 
-echo "extension=mysql_xdevapi.so" > ${PHP_CONFIG}/conf.d/20-mysql_xdevapi.ini
 echo "zend_extension=opcache.so" > ${PHP_CONFIG}/conf.d/10-opcache.ini
 # fix for opcache crashing with mysql_xdevapi\Collection::offset() and mysql_xdevapi\Collection::limit(). see https://bugs.php.net/bug.php?id=78639
 echo "opcache.optimization_level=0" >> ${PHP_CONFIG}/conf.d/10-opcache.ini

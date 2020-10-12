@@ -1,14 +1,8 @@
 #!/bin/bash
 
-PHP_VERSION=8.0.0
-XDEBUG_VERSION=2.9.7
-UOPZ_VERSION="v6.1.2"
-MYSQL_XDEVAPI_VERSION=8.0.21
+PHP_VERSION=5.6.40
+XDEBUG_VERSION=XDEBUG_2_5_5
 PHP_CONFIG=/usr/local/etc
-
-export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
-  CPPFLAGS="$CFLAGS" \
-  LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie"
 
 wget https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz
 tar xvzf php-${PHP_VERSION}.tar.gz
@@ -28,21 +22,20 @@ mkdir -v ${PHP_CONFIG}/conf.d
   --enable-bcmath \
   --with-curl \
   --enable-exif \
-  --enable-gd \
-  --with-freetype \
-  --with-jpeg \
+  --with-gd \
+  --with-freetype-dir \
+  --with-jpeg-dir \
+  --with-png-dir \
   --enable-intl \
   --enable-mbstring \
-  --enable-mysqlnd \
+  --enable-mysql \
   --with-mysqli \
   --with-pdo-mysql \
   --with-openssl \
   --with-zlib \
   --with-zlib-dir \
-  --with-zip \
-  --with-password-argon2 \
-  --with-sodium \
-  --with-libedit
+  --enable-zip \
+  --with-libzip
 
 make -j"$(nproc)"
 make install
@@ -61,30 +54,6 @@ make -j"$(nproc)"
 make install
 make clean
 
-# uopz
-git clone https://github.com/krakjoe/uopz.git /php-${PHP_VERSION}/ext/uopz
-cd /php-${PHP_VERSION}/ext/uopz || exit
-git checkout ${UOPZ_VERSION}
-phpize
-./configure \
-  --enable-uopz
-make -j"$(nproc)"
-make install
-make clean
-
-# mysql_xdevapi
-git clone https://github.com/php/pecl-database-mysql_xdevapi.git /php-${PHP_VERSION}/ext/mysql_xdevapi
-cd /php-${PHP_VERSION}/ext/mysql_xdevapi || exit
-git checkout ${MYSQL_XDEVAPI_VERSION}
-phpize
-./configure \
-  --enable-mysql-xdevapi \
-  --with-boost \
-  --with-protobuf
-make -j"$(nproc)"
-make install
-make clean
-
 cd /
 rm -fr /php-${PHP_VERSION}
 rm /php-${PHP_VERSION}.tar.gz
@@ -96,9 +65,6 @@ rm /php-${PHP_VERSION}.tar.gz
   echo "xdebug.remote_enable=1"
   echo "xdebug.remote_autostart=0"
 } >> ${PHP_CONFIG}/conf.d/xdebug.ini
-
-echo "extension=uopz.so" > ${PHP_CONFIG}/conf.d/uopz.ini
-echo "extension=mysql_xdevapi.so" > ${PHP_CONFIG}/conf.d/mysql_xdevapi.ini
 
 # install composer
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
