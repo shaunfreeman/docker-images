@@ -20,8 +20,6 @@ RUN apt-get update \
         pkg-config \
         re2c \
         dpkg-dev \
-        libprotobuf-dev \
-        libboost-dev \
         libcurl4-openssl-dev \
         libfreetype6-dev \
         libjpeg-turbo8-dev \
@@ -32,8 +30,6 @@ RUN apt-get update \
         zlib1g-dev \
         libxml2-dev \
         curl \
-        libprotobuf10 \
-        protobuf-compiler \
         libfreetype6 \
         zlib1g \
         libjpeg-turbo8 \
@@ -53,8 +49,6 @@ RUN apt-get update \
         pkg-config \
         re2c \
         dpkg-dev \
-        libprotobuf-dev \
-        libboost-dev \
         libcurl4-openssl-dev \
         libfreetype6-dev \
         libjpeg-turbo8-dev \
