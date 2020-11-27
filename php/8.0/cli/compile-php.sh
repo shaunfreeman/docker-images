@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PHP_VERSION=8.0.0
-XDEBUG_VERSION=2.9.8
+XDEBUG_VERSION=3.0.0
 PHP_CONFIG=/usr/local/etc
 
 export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
@@ -65,10 +65,10 @@ rm /php-${PHP_VERSION}.tar.gz
 
 {
   echo "zend_extension=xdebug.so"
-  echo "xdebug.remote_host=host.docker.internal"
-  echo "xdebug.remote_port=9009"
-  echo "xdebug.remote_enable=1"
-  echo "xdebug.remote_autostart=0"
+  echo "xdebug.client_host=host.docker.internal"
+  echo "xdebug.client_port=9009"
+  echo "xdebug.mode=debug"
+  echo "xdebug.start_with_request=trigger"
 } >> ${PHP_CONFIG}/conf.d/xdebug.ini
 
 # install composer
