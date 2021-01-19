@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PHP_VERSION=7.4.13
+PHP_VERSION=7.4.14
 XDEBUG_VERSION=2.9.8
 PHP_CONFIG=/usr/local/etc
 

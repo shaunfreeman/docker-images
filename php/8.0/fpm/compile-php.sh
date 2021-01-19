@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PHP_VERSION=8.0.0
+PHP_VERSION=8.0.1
 PHP_CONFIG=/usr/local/etc
 
 export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
