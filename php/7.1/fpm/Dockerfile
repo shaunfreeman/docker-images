@@ -2,6 +2,7 @@ FROM ubuntu:18.04
 
 MAINTAINER Shaun Freeman <shaun@shaunfreeman.co.uk>
 
+COPY fpm-pool.conf /tmp/fpm-pool.conf
 COPY compile-php.sh /usr/local/bin/compile-php.sh
 RUN ["chmod", "+x", "/usr/local/bin/compile-php.sh"]
 
@@ -35,10 +36,6 @@ RUN apt-get update \
         libjpeg-turbo8 \
         libxml2 \
         libzip-dev \
-        libargon2-0 \
-        libargon2-0-dev \
-        libsodium-dev \
-        libsodium23 \
         libedit2 \
         libedit-dev \
     && compile-php.sh \
@@ -63,8 +60,6 @@ RUN apt-get update \
         zlib1g-dev \
         libxml2-dev \
         libzip-dev \
-        libargon2-0-dev \
-        libsodium-dev \
         libedit-dev \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
@@ -73,4 +68,7 @@ COPY docker-php-entrypoint.sh /usr/local/bin/
 RUN ["chmod", "+x", "/usr/local/bin/docker-php-entrypoint.sh"]
 ENTRYPOINT ["/usr/local/bin/docker-php-entrypoint.sh"]
 
-CMD ["php", "-a"]
+STOPSIGNAL SIGQUIT
+
+EXPOSE 9000
+CMD ["php-fpm"]

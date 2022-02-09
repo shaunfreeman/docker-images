@@ -21,7 +21,6 @@ This is a repository of docker images I use in development. You are welcome to u
 * json
 * libxml
 * mbstring
-* mysql_xdevapi
 * mysqli
 * mysqlnd
 * openssl
@@ -40,7 +39,6 @@ This is a repository of docker images I use in development. You are welcome to u
 * sqlite3
 * standard
 * tokenizer
-* uopz
 * xdebug
 * xml
 * xmlreader
@@ -67,7 +65,6 @@ This is a repository of docker images I use in development. You are welcome to u
 * json
 * libxml
 * mbstring
-* mysql_xdevapi
 * mysqli
 * mysqlnd
 * openssl

@@ -3,19 +3,19 @@
 PHP_CONFIG=/usr/local/etc
 
 export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
-    CPPFLAGS="$CFLAGS" \
-    LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie"
+  CPPFLAGS="$CFLAGS" \
+  LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie"
 
-wget https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz
-tar xvzf php-${PHP_VERSION}.tar.gz
+wget https://www.php.net/distributions/php-"${PHP_VERSION}".tar.gz
+tar xvzf php-"${PHP_VERSION}".tar.gz
 mkdir -v ${PHP_CONFIG}/conf.d
 mkdir -v ${PHP_CONFIG}/php-fpm.d
 
-cd /php-${PHP_VERSION}
+cd /php-"${PHP_VERSION}" || exit
 
 ./buildconf --force
 ./configure \
-    --build=$(dpkg-architecture --query DEB_BUILD_GNU_TYPE) \
+    --build="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
     --with-config-file-path=${PHP_CONFIG} \
 	  --with-config-file-scan-dir=${PHP_CONFIG}/conf.d \
     --disable-cgi \
@@ -55,9 +55,9 @@ make clean
 mv php.ini-development ${PHP_CONFIG}/php.ini
 
 # mysql_xdevapi
-git clone https://github.com/php/pecl-database-mysql_xdevapi.git /php-${PHP_VERSION}/ext/mysql_xdevapi
-cd /php-${PHP_VERSION}/ext/mysql_xdevapi
-git checkout ${MYSQL_XDEVAPI_VERSION}
+git clone https://github.com/php/pecl-database-mysql_xdevapi.git /php-"${PHP_VERSION}"/ext/mysql_xdevapi
+cd /php-"${PHP_VERSION}"/ext/mysql_xdevapi || exit
+git checkout "${MYSQL_XDEVAPI_VERSION}"
 phpize
 ./configure \
     --enable-mysql-xdevapi \
@@ -68,8 +68,8 @@ make install
 make clean
 
 cd /
-rm -fr /php-${PHP_VERSION}
-rm /php-${PHP_VERSION}.tar.gz
+rm -fr /php-"${PHP_VERSION}"
+rm /php-"${PHP_VERSION}".tar.gz
 
 mv ${PHP_CONFIG}/php-fpm.d/www.conf.default ${PHP_CONFIG}/php-fpm.d/00default.conf
 mv /tmp/fpm-pool.conf ${PHP_CONFIG}/php-fpm.d/www.conf

@@ -35,10 +35,6 @@ RUN apt-get update \
         libjpeg-turbo8 \
         libxml2 \
         libzip-dev \
-        libargon2-0 \
-        libargon2-0-dev \
-        libsodium-dev \
-        libsodium23 \
         libedit2 \
         libedit-dev \
     && compile-php.sh \
@@ -63,8 +59,6 @@ RUN apt-get update \
         zlib1g-dev \
         libxml2-dev \
         libzip-dev \
-        libargon2-0-dev \
-        libsodium-dev \
         libedit-dev \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
