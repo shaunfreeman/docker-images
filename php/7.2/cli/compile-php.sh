@@ -19,7 +19,7 @@ mkdir -v ${PHP_CONFIG}/conf.d
 ./configure \
     --build=$(dpkg-architecture --query DEB_BUILD_GNU_TYPE) \
     --with-config-file-path=${PHP_CONFIG} \
-	  --with-config-file-scan-dir=${PHP_CONFIG}/conf.d \
+	--with-config-file-scan-dir=${PHP_CONFIG}/conf.d \
     --disable-cgi \
     --disable-fpm \
     --disable-phpdbg \

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PHP_VERSION=7.3.15
+PHP_VERSION=7.3.33
 XDEBUG_VERSION=2.9.1
 UOPZ_VERSION="v6.1.1"
 MYSQL_XDEVAPI_VERSION=8.0.19
@@ -19,7 +19,7 @@ mkdir -v ${PHP_CONFIG}/conf.d
 ./configure \
     --build=$(dpkg-architecture --query DEB_BUILD_GNU_TYPE) \
     --with-config-file-path=${PHP_CONFIG} \
-	  --with-config-file-scan-dir=${PHP_CONFIG}/conf.d \
+	--with-config-file-scan-dir=${PHP_CONFIG}/conf.d \
     --disable-cgi \
     --disable-fpm \
     --disable-phpdbg \
